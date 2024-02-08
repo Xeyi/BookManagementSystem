@@ -6,10 +6,9 @@ namespace BookManagementSystem.Service
     {
         public IEnumerable<Book> GetAllBooks();
         public Book GetBookById(int id);
-        public int AddOrUpdateBook(Book book, int id);
+        public int UpdateBook(Book book);
         public int DeleteBook(int id);
 
-        /*public IEnumerable<BookWithUsersCount> GetAllBooksWithUserCount();
-        public BookWithUsersCount GetBookWithUserCount(int id);*/
+        public int AddBook(Book book);
     }
 }

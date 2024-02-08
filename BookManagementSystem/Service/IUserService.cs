@@ -4,6 +4,9 @@ namespace BookManagementSystem.Service
 {
     public interface IUserService
     {
-        public IEnumerable<Book> GetPurchasedBooksByUserID(int id);
+        public IEnumerable<User> GetAllUsers();
+        public User GetUserById(int id);
+        public int AddOrUpdateUser(User user, int id);
+        public int DeleteUser(int id);
     }
 }

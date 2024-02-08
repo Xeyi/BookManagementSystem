@@ -13,7 +13,5 @@ namespace BookManagementSystem.Repositories
 
         public int DeleteBook(int id);
 
-        /*public IEnumerable<BookWithUsersCount> FindAllBooksWithUsersCount();
-        public BookWithUsersCount FindBookWithUserCount(int id);*/
     }
 }

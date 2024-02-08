@@ -9,12 +9,14 @@ namespace BookManagementSystem.Controllers
     public class BookManagementSystemController : ControllerBase
     {
         private IBookService _bookService;
-        /*private IUserService _userService;*/
+        private IUserService _userService;
+        private IBookUserService _bookUserService;
 
-        public BookManagementSystemController(IBookService bookService)
+        public BookManagementSystemController(IBookService bookService, IUserService userService, IBookUserService bookUserService)
         {
             _bookService = bookService;
-            /*_userService = userService;*/
+            _userService = userService;
+            _bookUserService = bookUserService;
         }
 
         [HttpGet("/books")]
@@ -24,16 +26,29 @@ namespace BookManagementSystem.Controllers
         }
 
         [HttpGet("/books/{id}")]
-        public Book GetBookById(int id)
+        public IActionResult GetBookById(int id)
         {
-            return _bookService.GetBookById(id);
+            var book = _bookService.GetBookById(id);
+            if (book == null) return BadRequest("Cannot find the book");
+            return new JsonResult(book);
         }
 
         [HttpPost("/books/update")]
-        public IActionResult UpdateBook([FromBody] Book book, [FromQuery] int id = -1)
+        public IActionResult UpdateBook([FromBody] Book book)
         {
-            int success = _bookService.AddOrUpdateBook(book,id);
+            int success = _bookService.UpdateBook(book);
             if(success == 0) {
+                return BadRequest("Fail to update");
+            }
+            return Ok("Update successful");
+        }
+
+        [HttpPost("/books/add")]
+        public IActionResult AddBook([FromBody] Book book)
+        {
+            int success = _bookService.AddBook(book);
+            if (success == 0)
+            {
                 return BadRequest("Fail to update");
             }
             return Ok("Update successful");
@@ -52,9 +67,66 @@ namespace BookManagementSystem.Controllers
             return Ok("Update successful");
         }
 
-        /*[HttpGet("/booksWithUserCount")]
-        public IEnumerable<BookWithUsersCount> GetAllBooksWithUserCount() {
-            return _bookService.GetAllBooksWithUserCount();
-        }*/
+        [HttpGet("/users")]
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _userService.GetAllUsers();
+        }
+
+        [HttpGet("/users/{id}")]
+        public IActionResult GetUsersById(int id)
+        {
+            var user = _userService.GetUserById(id);
+            if (user == null) return BadRequest("Cannot find the user");
+            return new JsonResult(user);
+        }
+
+        [HttpPost("/users/update")]
+        public IActionResult UpdateUser([FromBody] User user, [FromQuery] int id = -1)
+        {
+            try
+            {
+                int success = _userService.AddOrUpdateUser(user, id);
+                
+                return Ok("Update successful");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+        [HttpGet("/users/delete")]
+        public IActionResult DeleteUser([FromQuery] int id)
+        {
+            int result = _userService.DeleteUser(id);
+
+            if (result == 0)
+            {
+                return BadRequest("Fail to delete");
+            }
+            return Ok("Update successful");
+        }
+
+        [HttpGet("/bookUsers/GetAllUsersBy{id}")]
+        public int GetAllUsersByBookId( int id)
+        {
+            return _bookUserService.GetAllUsersByBookId(id).Count();
+        }
+
+        [HttpGet("/bookUsers/GetAllBooksBy{id}")]
+        public IEnumerable<Book> GetAllBooksByUserId( int id)
+        {
+            return _bookUserService.GetAllBooksByUserId(id);
+        }
+
+        [HttpPost("/bookUsers/addRecord")]
+        public bool AddRecord(BookUser bookUser)
+        {
+            return _bookUserService.AddRecord(bookUser.BookId,bookUser.UserId);
+        }
     }
 }

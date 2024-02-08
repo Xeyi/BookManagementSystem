@@ -1,8 +1,7 @@
 ﻿using BookManagementSystem.Entities;
-using BookManagementSystem.Service;
 using BookManagementSystem.Repositories;
 
-namespace BookManagementSystem.Implement
+namespace BookManagementSystem.Service
 {
     public class BookService : IBookService
     {
@@ -13,37 +12,54 @@ namespace BookManagementSystem.Implement
             _bookRepository = bookRepository;
         }
 
-        int IBookService.AddOrUpdateBook(Book book, int id)
+        int IBookService.UpdateBook(Book book)
         {
             try
             {
-                if (id == -1)
-                {
-                    _bookRepository.AddBookIfNotExist(book);
-                }
-                else
-                {
-                    _bookRepository.UpdateBook(book);
-                }
-            }catch(Exception ex)
+                _bookRepository.UpdateBook(book);
+            }
+            catch (Exception ex)
             {
                 return 0;
             }
 
             return 1;
-            
+
+        }
+
+        int IBookService.AddBook(Book book)
+        {
+            try
+            {
+                _bookRepository.AddBookIfNotExist(new Book
+                {
+                    BookId = 0,
+                    Title = book.Title,
+                    Author = book.Author,
+                    PublicationYear = book.PublicationYear,
+                });
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+            return 1;
+
         }
 
         int IBookService.DeleteBook(int id)
         {
+            int ActionResult;
             try
             {
-                _bookRepository.DeleteBook(id);
-            }catch(Exception ex)
+                ActionResult = _bookRepository.DeleteBook(id);
+            }
+            catch (Exception ex)
             {
                 return 0;
             }
-            return 1;
+            return ActionResult;
         }
 
         IEnumerable<Book> IBookService.GetAllBooks()
@@ -51,20 +67,12 @@ namespace BookManagementSystem.Implement
             return _bookRepository.GetAllBooks();
         }
 
-        /*IEnumerable<BookWithUsersCount> IBookService.GetAllBooksWithUserCount()
-        {
-            return _bookRepository.FindAllBooksWithUsersCount();
-        }*/
-
         Book IBookService.GetBookById(int id)
         {
             return _bookRepository.FindBookById(id);
         }
 
-        /*BookWithUsersCount IBookService.GetBookWithUserCount(int id)
-        {
-            return _bookRepository.FindBookWithUserCount(id);
-        }*/
+
 
     }
 }

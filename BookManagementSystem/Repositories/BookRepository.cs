@@ -1,7 +1,6 @@
 ﻿using BookManagementSystem.Entities;
-using BookManagementSystem.Repositories;
 
-namespace BookManagementSystem.Implement
+namespace BookManagementSystem.Repositories
 {
     public class BookRepository : IBookRepository
     {
@@ -11,6 +10,7 @@ namespace BookManagementSystem.Implement
         {
             _dbContext = dbContext;
         }
+
 
         int IBookRepository.AddBookIfNotExist(Book book)
         {
@@ -22,24 +22,14 @@ namespace BookManagementSystem.Implement
             return _dbContext.DeleteBook(id);
         }
 
-       /* IEnumerable<BookWithUsersCount> IBookRepository.FindAllBooksWithUsersCount()
-        {
-            return (IEnumerable<BookWithUsersCount>)_dbContext.BooksWithUsersCount.ToList();
-        }*/
-
         Book IBookRepository.FindBookById(int id)
         {
             return _dbContext.GetBookById(id);
         }
 
-        /*BookWithUsersCount IBookRepository.FindBookWithUserCount(int id)
-        {
-            throw new NotImplementedException();
-        }*/
-
         IEnumerable<Book> IBookRepository.GetAllBooks()
         {
-            return (IEnumerable<Book>)_dbContext.Books.ToList();
+            return _dbContext.Books.ToList();
         }
 
         int IBookRepository.UpdateBook(Book book)
@@ -47,11 +37,13 @@ namespace BookManagementSystem.Implement
             try
             {
                 _dbContext.UpdateBook(book);
-            }catch(Exception ex)
+                return 1;
+            }
+            catch (Exception ex)
             {
                 return 0;
             }
-            return 1;
+
         }
     }
 }

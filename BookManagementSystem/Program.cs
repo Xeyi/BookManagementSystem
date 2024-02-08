@@ -15,11 +15,17 @@ namespace BookManagementSystem
             builder.Services.AddScoped<IBookRepository, BookRepository>();
             builder.Services.AddScoped<IBookService, BookService>();
 
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<IBookUserService, BookUserService>();
+            builder.Services.AddScoped<IBookUserRepository, BookUserRepository>();
+
             builder.Services.AddDbContext<DatabaseContext>(options =>
             {
-                options.UseMySql(builder.Configuration.GetConnectionString("MySqlConnection"), new MySqlServerVersion(new Version(8, 0, 28)));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            /*builder.Services.AddScoped<IUserService, UserService>();*/
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

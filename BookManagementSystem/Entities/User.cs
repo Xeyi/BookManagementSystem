@@ -2,7 +2,7 @@
 
 namespace BookManagementSystem.Entities
 {
-    [Table("User")]
+    [Table("Users")]
     public class User
     {
         public int UserId { get; set; }
