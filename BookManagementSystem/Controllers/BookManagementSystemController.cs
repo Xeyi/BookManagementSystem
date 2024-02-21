@@ -46,11 +46,15 @@ namespace BookManagementSystem.Controllers
         [HttpPost("/books/add")]
         public IActionResult AddBook([FromBody] Book book)
         {
-            int success = _bookService.AddBook(book);
-            if (success == 0)
+            try
             {
-                return BadRequest("Fail to update");
+                int success = _bookService.AddBook(book);
+            }catch(Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
             }
+            
+            
             return Ok("Update successful");
         }
 
@@ -112,9 +116,19 @@ namespace BookManagementSystem.Controllers
         }
 
         [HttpGet("/bookUsers/GetAllUsersBy{id}")]
-        public int GetAllUsersByBookId( int id)
+        public IActionResult GetAllUsersByBookId( int id)
         {
-            return _bookUserService.GetAllUsersByBookId(id).Count();
+            var book = _bookService.GetBookById(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            var bookUser = new
+            {
+                BookName = _bookService.GetBookById(id).Title,
+                NoOfReaders = _bookUserService.GetAllUsersByBookId(id)
+            };
+            return new JsonResult(bookUser);
         }
 
         [HttpGet("/bookUsers/GetAllBooksBy{id}")]
@@ -127,6 +141,12 @@ namespace BookManagementSystem.Controllers
         public bool AddRecord(BookUser bookUser)
         {
             return _bookUserService.AddRecord(bookUser.BookId,bookUser.UserId);
+        }
+
+        [HttpGet("/bookUsers/GetAllBooksWithUsers")]
+        public IActionResult GetAllBooksWithUseres()
+        {
+            return new JsonResult(_bookUserService.GetAllBooksWithUsers());
         }
     }
 }

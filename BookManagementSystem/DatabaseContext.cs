@@ -33,12 +33,15 @@ namespace BookManagementSystem
             return target;
         }
 
-        public IEnumerable<User> FindAllUsersByBookId(int bookId)
+        public int FindAllUsersByBookId(int bookId)
         {
             List<User> target = bookUsers.Where(u => u.BookId == bookId).Select(u => u.user).ToList();
+            
 
-            return target;
+            return target.Count;
         }
+
+        
 
 
         public int AddBookIfNotExist(Book book)

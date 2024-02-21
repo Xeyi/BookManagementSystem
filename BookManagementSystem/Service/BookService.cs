@@ -29,20 +29,9 @@ namespace BookManagementSystem.Service
 
         int IBookService.AddBook(Book book)
         {
-            try
-            {
-                _bookRepository.AddBookIfNotExist(new Book
-                {
-                    BookId = 0,
-                    Title = book.Title,
-                    Author = book.Author,
-                    PublicationYear = book.PublicationYear,
-                });
-            }
-            catch (Exception ex)
-            {
-                return 0;
-            }
+            
+            _bookRepository.AddBookIfNotExist(book);
+            
 
             return 1;
 

@@ -7,10 +7,10 @@ namespace BookManagementSystem.Repositories
 
         public IEnumerable<Book> FindAllBooksWithUserId(int userId);
 
-        public IEnumerable<User> FindAllUsersWithBookId(int BookId);
+        public int FindAllUsersWithBookId(int BookId);
 
         public Boolean AddRecord(int bookId, int userId);
 
-
+        public List<object> FindAllBooksWithUsers();
     }
 }

@@ -22,7 +22,12 @@ namespace BookManagementSystem.Service
             return _bookUserRepository.FindAllBooksWithUserId(userId);
         }
 
-        IEnumerable<User> IBookUserService.GetAllUsersByBookId(int bookId)
+        List<object> IBookUserService.GetAllBooksWithUsers()
+        {
+            return _bookUserRepository.FindAllBooksWithUsers();
+        }
+
+        int IBookUserService.GetAllUsersByBookId(int bookId)
         {
             return _bookUserRepository.FindAllUsersWithBookId(bookId);
         }

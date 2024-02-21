@@ -6,9 +6,11 @@ namespace BookManagementSystem.Service
     {
         public IEnumerable<Book> GetAllBooksByUserId(int  userId);
 
-        public IEnumerable<User> GetAllUsersByBookId(int bookId);
+        public int GetAllUsersByBookId(int bookId);
 
         public Boolean AddRecord(int bookId, int userId);
+
+        public List<object> GetAllBooksWithUsers();
 
     }
 }
