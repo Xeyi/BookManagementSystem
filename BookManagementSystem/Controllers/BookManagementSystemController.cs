@@ -86,11 +86,11 @@ namespace BookManagementSystem.Controllers
         }
 
         [HttpPost("/users/update")]
-        public IActionResult UpdateUser([FromBody] User user, [FromQuery] int id = -1)
+        public IActionResult UpdateUser([FromBody] User user)
         {
             try
             {
-                int success = _userService.AddOrUpdateUser(user, id);
+                int success = _userService.UpdateUser(user);
                 
                 return Ok("Update successful");
             }
@@ -98,6 +98,22 @@ namespace BookManagementSystem.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost("/users/add")]
+        public IActionResult AddUser([FromBody] User user)
+        {
+            try
+            {
+                int success = _userService.AddUser(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+
+
+            return Ok("Update successful");
         }
 
 

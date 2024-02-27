@@ -10,4 +10,10 @@ namespace BookManagementSystem.Entities
         public int UserId {  get; set; }
         public User user { get; set; }
     }
+
+    public class BookWithReaderCount
+    {
+        public string BookName { get; set; }
+        public int NoOfReaders { get; set; }
+    }
 }

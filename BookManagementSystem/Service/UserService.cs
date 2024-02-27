@@ -13,19 +13,14 @@ namespace BookManagementSystem.Implement
             _userRepository = userRepository;
         }
 
-        int IUserService.AddOrUpdateUser(User user, int id)
+        int IUserService.UpdateUser(User user)
         {
-            Console.WriteLine(id);
             try
             {
-                if (id != -1)
-                {
-                    _userRepository.AddUserIfNotExist(user);
-                }
-                else
-                {
-                    _userRepository.UpdateUser(user);
-                }
+                
+                
+                _userRepository.UpdateUser(user);
+                
                 return 1;
             }
             catch (Exception ex)
@@ -34,6 +29,8 @@ namespace BookManagementSystem.Implement
             }
             
         }
+
+        int IUserService.AddUser(BookManagementSystem.Entities.User user) { return _userRepository.AddUserIfNotExist(user); }
 
         int IUserService.DeleteUser(int id)
         {

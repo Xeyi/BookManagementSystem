@@ -1,5 +1,6 @@
 ﻿using BookManagementSystem.Entities;
 using BookManagementSystem.Service;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Linq;
@@ -38,9 +39,9 @@ namespace BookManagementSystem.Repositories
             return _dbContext.FindAllBooksByUserId(userId);
         }
 
-        List<object> IBookUserRepository.FindAllBooksWithUsers()
+        List<BookWithReaderCount> IBookUserRepository.FindAllBooksWithUsers()
         {
-            var query = from book in _dbContext.Books
+            /*var query = from book in _dbContext.Books
                         join buser in _dbContext.bookUsers on book.BookId equals buser.BookId into gj
                         from subBU in gj.DefaultIfEmpty()
                         group new { book, subBU } by book.BookId into g
@@ -49,9 +50,9 @@ namespace BookManagementSystem.Repositories
                         {
                             BookName = g.FirstOrDefault().book.Title,
                             NoOfReaders = g.Select(gr => gr.subBU.UserId).Distinct().Count()
-                        };
+                        };*/
 
-            return query.ToList<object>();
+            return _dbContext.ExecuteAllBooksFunction();
 
         }
 
@@ -59,5 +60,7 @@ namespace BookManagementSystem.Repositories
         {
             return _dbContext.FindAllUsersByBookId(BookId);
         }
+
+        
     }
 }

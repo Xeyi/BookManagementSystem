@@ -16,6 +16,18 @@ namespace BookManagementSystem
 
         public DbSet<BookUser> bookUsers { get; set; }
 
+        public DbSet<BookWithReaderCount> bwrc { get; set; }
+
+
+        public List<BookWithReaderCount> ExecuteAllBooksFunction()
+        {
+            string sqlQuery = "SELECT * FROM GetBooksWithReaderCount()"; 
+
+            List<BookWithReaderCount> result = bwrc.FromSqlRaw(sqlQuery).ToList();
+
+            return result;
+        }
+
         public Boolean AddBookUserRecord(BookUser bookUser)
         {
 
@@ -92,7 +104,7 @@ namespace BookManagementSystem
 
         internal int AddUserIfNotExist(User user)
         {
-            var existingUser = Users.FirstOrDefault(u => u.UserId == u.UserId);
+            var existingUser = Users.FirstOrDefault(u => u.UserId == user.UserId);
             if (existingUser != null)
             {
                 throw new ItemAlreadyExistException("User Already Exist");
@@ -121,7 +133,6 @@ namespace BookManagementSystem
 
         internal int UpdateUser(User user)
         {
-
             var existingUser = Users.FirstOrDefault(u => u.UserId == u.UserId);
             if (existingUser == null)
             {
@@ -158,6 +169,8 @@ namespace BookManagementSystem
                 .HasForeignKey(bu => bu.UserId);
             modelBuilder.Entity<Book>().HasKey(b => b.BookId);
             modelBuilder.Entity<User>().HasKey(u => u.UserId);
+
+            modelBuilder.Entity<BookWithReaderCount>().HasNoKey();
         }
     }
 }

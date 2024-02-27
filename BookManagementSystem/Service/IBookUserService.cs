@@ -10,7 +10,7 @@ namespace BookManagementSystem.Service
 
         public Boolean AddRecord(int bookId, int userId);
 
-        public List<object> GetAllBooksWithUsers();
+        public List<BookWithReaderCount> GetAllBooksWithUsers();
 
     }
 }

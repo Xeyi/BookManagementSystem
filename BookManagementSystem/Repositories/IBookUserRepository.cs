@@ -11,6 +11,6 @@ namespace BookManagementSystem.Repositories
 
         public Boolean AddRecord(int bookId, int userId);
 
-        public List<object> FindAllBooksWithUsers();
+        public List<BookWithReaderCount> FindAllBooksWithUsers();
     }
 }
